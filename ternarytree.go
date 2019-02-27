@@ -1,15 +1,16 @@
 package ternarytree
 
+// TernaryTree is a ternary search tree data structure.
 type TernaryTree struct {
-	head     *TreeNode
+	head     *treeNode
 	terminal bool
 }
 
-type TreeNode struct {
+type treeNode struct {
 	char     byte
-	loKid    *TreeNode
-	eqKid    *TreeNode
-	hiKid    *TreeNode
+	loKid    *treeNode
+	eqKid    *treeNode
+	hiKid    *treeNode
 	terminal bool
 }
 
@@ -35,9 +36,9 @@ func (tree *TernaryTree) Search(s string) bool {
 	}
 }
 
-func insertVisitor(node *TreeNode, head byte, tail []byte) *TreeNode {
+func insertVisitor(node *treeNode, head byte, tail []byte) *treeNode {
 	if node == nil {
-		node = &TreeNode{char: head}
+		node = &treeNode{char: head}
 	}
 	if head < node.char {
 		node.loKid = insertVisitor(node.loKid, head, tail)
@@ -53,7 +54,7 @@ func insertVisitor(node *TreeNode, head byte, tail []byte) *TreeNode {
 	return node
 }
 
-func searchVisitor(node *TreeNode, head byte, tail []byte) bool {
+func searchVisitor(node *treeNode, head byte, tail []byte) bool {
 	if node == nil {
 		return false
 	}
@@ -62,9 +63,8 @@ func searchVisitor(node *TreeNode, head byte, tail []byte) bool {
 	} else if head == node.char {
 		if len(tail) > 0 {
 			return searchVisitor(node.eqKid, tail[0], tail[1:])
-		} else {
-			return node.terminal
 		}
+		return node.terminal
 	} else {
 		return searchVisitor(node.hiKid, head, tail)
 	}
