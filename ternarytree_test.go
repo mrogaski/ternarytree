@@ -40,7 +40,7 @@ func TestSearchSuccess(t *testing.T) {
 		tree.Insert(v)
 	}
 	for _, v := range data {
-		if ! tree.Search(v) {
+		if !tree.Search(v) {
 			t.Errorf("Search failed for '%s'", v)
 		}
 	}
