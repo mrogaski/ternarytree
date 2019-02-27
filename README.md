@@ -4,6 +4,8 @@
 [![codecov](https://codecov.io/gh/mrogaski/ternarytree/branch/develop/graph/badge.svg)](https://codecov.io/gh/mrogaski/ternarytree)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b2e5ab1be1e047a3ae2c5a00c0fcfa96)](https://www.codacy.com/app/mrogaski/ternarytree?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mrogaski/ternarytree&amp;utm_campaign=Badge_Grade)
 [![Go Report Card](https://goreportcard.com/badge/github.com/mrogaski/ternarytree)](https://goreportcard.com/report/github.com/mrogaski/ternarytree)
+[![GoDoc](https://godoc.org/github.com/mrogaski/ternarytree?status.svg)](https://godoc.org/github.com/mrogaski/ternarytree)
+
 
 A Go implementation of ternary search trees as described by Jon Bentley and Robert Sedgewick.
   
