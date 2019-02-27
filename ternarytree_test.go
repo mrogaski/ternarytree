@@ -64,3 +64,15 @@ func TestSearchFail(t *testing.T) {
 		}
 	}
 }
+
+func TestEmptyString(t *testing.T) {
+	tree := TernaryTree{}
+	tree.Insert("foo")
+	if tree.Search("") {
+		t.Fail()
+	}
+	tree.Insert("")
+	if !tree.Search("") {
+		t.Fail()
+	}
+}
