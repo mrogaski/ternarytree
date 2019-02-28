@@ -24,18 +24,6 @@ func (tree *TernaryTree) Insert(s string) {
 	}
 }
 
-// Search tests whether a string was added to the ternary search tree.
-func (tree *TernaryTree) Search(s string) bool {
-	b := []byte(s)
-	if len(b) > 0 {
-		return searchVisitor(tree.head, b[0], b[1:])
-	} else if tree.terminal {
-		return true
-	} else {
-		return false
-	}
-}
-
 func insertVisitor(node *treeNode, head byte, tail []byte) *treeNode {
 	if node == nil {
 		node = &treeNode{char: head}
@@ -52,6 +40,18 @@ func insertVisitor(node *treeNode, head byte, tail []byte) *treeNode {
 		node.hiKid = insertVisitor(node.hiKid, head, tail)
 	}
 	return node
+}
+
+// Search tests whether a string was added to the ternary search tree.
+func (tree *TernaryTree) Search(s string) bool {
+	b := []byte(s)
+	if len(b) > 0 {
+		return searchVisitor(tree.head, b[0], b[1:])
+	} else if tree.terminal {
+		return true
+	} else {
+		return false
+	}
 }
 
 func searchVisitor(node *treeNode, head byte, tail []byte) bool {

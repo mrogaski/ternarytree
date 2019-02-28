@@ -4,13 +4,22 @@ import "testing"
 
 func testData() []string {
 	return []string{
-		"firewater",
-		"stereolab",
-		"tirewater",
-		"tidewader",
-		"tidewader",
-		"firewater",
-		"stereo",
+		"information",
+		"expectation",
+		"respectable",
+		"accumulation",
+		"discrimination",
+		"complication",
+		"intermediate",
+		"grandmother",
+		"introduction",
+		"advertising",
+		"acquaintance",
+		"interference",
+		"preparation",
+		"satisfaction",
+		"intervention",
+		"consideration",
 	}
 }
 
@@ -53,10 +62,10 @@ func TestSearchFail(t *testing.T) {
 		tree.Insert(v)
 	}
 	targets := []string{
-		"fire",
-		"tide",
+		"accumulate",
+		"intervene",
 		"stereophonic",
-		"clutch",
+		"expect",
 	}
 	for _, v := range targets {
 		if tree.Search(v) {
