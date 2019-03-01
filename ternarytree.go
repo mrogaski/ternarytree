@@ -16,15 +16,14 @@ type treeNode struct {
 
 // Insert adds a string to the ternary search tree.
 func (tree *TernaryTree) Insert(s string) {
-	b := []byte(s)
-	if len(b) > 0 {
-		tree.head = insertVisitor(tree.head, b[0], b[1:])
+	if len(s) > 0 {
+		tree.head = insertVisitor(tree.head, s[0], s[1:])
 	} else {
 		tree.terminal = true
 	}
 }
 
-func insertVisitor(node *treeNode, head byte, tail []byte) *treeNode {
+func insertVisitor(node *treeNode, head byte, tail string) *treeNode {
 	if node == nil {
 		node = &treeNode{char: head}
 	}
@@ -44,9 +43,8 @@ func insertVisitor(node *treeNode, head byte, tail []byte) *treeNode {
 
 // Search tests whether a string was added to the ternary search tree.
 func (tree *TernaryTree) Search(s string) bool {
-	b := []byte(s)
-	if len(b) > 0 {
-		return searchVisitor(tree.head, b[0], b[1:])
+	if len(s) > 0 {
+		return searchVisitor(tree.head, s[0], s[1:])
 	} else if tree.terminal {
 		return true
 	} else {
@@ -54,7 +52,7 @@ func (tree *TernaryTree) Search(s string) bool {
 	}
 }
 
-func searchVisitor(node *treeNode, head byte, tail []byte) bool {
+func searchVisitor(node *treeNode, head byte, tail string) bool {
 	if node == nil {
 		return false
 	}
