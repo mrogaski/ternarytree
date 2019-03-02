@@ -72,11 +72,28 @@ func searchVisitor(node *treeNode, head byte, tail string) bool {
 func (tree *TernaryTree) PartialMatchSearch(s string, wildcard byte) []string {
 	var result []string
 	if len(s) > 0 {
-		pmSearchVisitor(tree.head, s[0], s[1:], &result)
+		pmSearchVisitor(tree.head, wildcard, s[0], s[1:], &result)
 	} else if tree.hasEmpty {
 		result = append(result, "")
 	}
 	return result
 }
 
-func pmSearchVisitor(node *treeNode, head byte, tail string, result *[]string) {}
+func pmSearchVisitor(node *treeNode, wildcard byte, head byte, tail string, result *[]string) {
+	if node == nil {
+		return
+	}
+	if head == wildcard || head < node.char {
+		pmSearchVisitor(node.loKid, wildcard, head, tail, result)
+	}
+	if head == wildcard || head == node.char {
+		if len(tail) > 0 {
+			pmSearchVisitor(node.eqKid, wildcard, tail[0], tail[1:], result)
+		} else {
+			*result = append(*result, *node.data)
+		}
+	}
+	if head == wildcard || head > node.char {
+		pmSearchVisitor(node.hiKid, wildcard, head, tail, result)
+	}
+}

@@ -97,19 +97,19 @@ func TestPartialMatchSearch(t *testing.T) {
 	}
 	result := tree.PartialMatchSearch("in..........", '.')
 	expected := []string{
-		"intermediate",
-		"introduction",
 		"interference",
+		"intermediate",
 		"intervention",
+		"introduction",
 	}
 	if !reflect.DeepEqual(result, expected) {
 		t.Errorf("expected: %v, observed: %v", expected, result)
 	}
 	result = tree.PartialMatchSearch("XXtXXXXXtion", 'X')
 	expected = []string{
+		"intervention",
 		"introduction",
 		"satisfaction",
-		"intervention",
 	}
 	if !reflect.DeepEqual(result, expected) {
 		t.Errorf("expected: %v, observed: %v", expected, result)
