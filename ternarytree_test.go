@@ -1,6 +1,9 @@
 package ternarytree
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 func testData() []string {
 	return []string{
@@ -28,9 +31,9 @@ func TestNew(t *testing.T) {
 	if tree.head != nil {
 		t.Errorf("TernaryTree head incorrectly initialized; expected: %v, observed: %v", nil, tree.head)
 	}
-	if tree.terminal != false {
-		t.Errorf("TernaryTree terminal flag incorrectly initialized; expected: %v, observed: %v",
-			false, tree.terminal)
+	if tree.hasEmpty {
+		t.Errorf("TernaryTree data flag incorrectly initialized; expected: %v, observed: %v",
+			false, tree.hasEmpty)
 	}
 }
 
@@ -83,5 +86,51 @@ func TestEmptyString(t *testing.T) {
 	tree.Insert("")
 	if !tree.Search("") {
 		t.Fail()
+	}
+}
+
+func TestPartialMatchSearch(t *testing.T) {
+	tree := TernaryTree{}
+	data := testData()
+	for _, v := range data {
+		tree.Insert(v)
+	}
+	result := tree.PartialMatchSearch("in..........", '.')
+	expected := []string{
+		"interference",
+		"intermediate",
+		"intervention",
+		"introduction",
+	}
+	if !reflect.DeepEqual(result, expected) {
+		t.Errorf("expected: %v, observed: %v", expected, result)
+	}
+	result = tree.PartialMatchSearch("XXtXXXXXtion", 'X')
+	expected = []string{
+		"intervention",
+		"introduction",
+		"satisfaction",
+	}
+	if !reflect.DeepEqual(result, expected) {
+		t.Errorf("expected: %v, observed: %v", expected, result)
+	}
+}
+
+func TestPartialMatchSearchEmptyString(t *testing.T) {
+	tree := TernaryTree{}
+	data := testData()
+	for _, v := range data {
+		tree.Insert(v)
+	}
+	var expected []string
+	result := tree.PartialMatchSearch("", '.')
+	if !reflect.DeepEqual(result, expected) {
+		t.Errorf("expected: %v, observed: %v", expected, result)
+	}
+	tree.Insert("")
+	result = tree.PartialMatchSearch("", '.')
+	expected = []string{""}
+	if !reflect.DeepEqual(result, expected) {
+		t.Errorf("expected: %v, observed: %v", expected, result)
 	}
 }
