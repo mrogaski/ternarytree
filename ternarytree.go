@@ -67,3 +67,16 @@ func searchVisitor(node *treeNode, head byte, tail string) bool {
 		return searchVisitor(node.hiKid, head, tail)
 	}
 }
+
+// PartialMatchSearch finds matches for wildcard patterns in the ternary search tree.
+func (tree *TernaryTree) PartialMatchSearch(s string, wildcard byte) []string {
+	var result []string
+	if len(s) > 0 {
+		pmSearchVisitor(tree.head, s[0], s[1:], &result)
+	} else if tree.hasEmpty {
+		result = append(result, "")
+	}
+	return result
+}
+
+func pmSearchVisitor(node *treeNode, head byte, tail string, result *[]string) {}
