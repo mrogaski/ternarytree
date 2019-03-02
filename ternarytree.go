@@ -3,58 +3,56 @@ package ternarytree
 // TernaryTree is a ternary search tree data structure.
 type TernaryTree struct {
 	head     *treeNode
-	terminal bool
+	hasEmpty bool
 }
 
 type treeNode struct {
-	char     byte
-	loKid    *treeNode
-	eqKid    *treeNode
-	hiKid    *treeNode
-	terminal bool
+	char  byte
+	loKid *treeNode
+	eqKid *treeNode
+	hiKid *treeNode
+	data  *string
 }
 
 // Insert adds a string to the ternary search tree.
 func (tree *TernaryTree) Insert(s string) {
-	b := []byte(s)
-	if len(b) > 0 {
-		tree.head = insertVisitor(tree.head, b[0], b[1:])
+	if len(s) > 0 {
+		tree.head = insertVisitor(tree.head, s[0], s[1:], &s)
 	} else {
-		tree.terminal = true
+		tree.hasEmpty = true
 	}
+}
+
+func insertVisitor(node *treeNode, head byte, tail string, start *string) *treeNode {
+	if node == nil {
+		node = &treeNode{char: head}
+	}
+	if head < node.char {
+		node.loKid = insertVisitor(node.loKid, head, tail, start)
+	} else if head == node.char {
+		if len(tail) > 0 {
+			node.eqKid = insertVisitor(node.eqKid, tail[0], tail[1:], start)
+		} else {
+			node.data = start
+		}
+	} else {
+		node.hiKid = insertVisitor(node.hiKid, head, tail, start)
+	}
+	return node
 }
 
 // Search tests whether a string was added to the ternary search tree.
 func (tree *TernaryTree) Search(s string) bool {
-	b := []byte(s)
-	if len(b) > 0 {
-		return searchVisitor(tree.head, b[0], b[1:])
-	} else if tree.terminal {
+	if len(s) > 0 {
+		return searchVisitor(tree.head, s[0], s[1:])
+	} else if tree.hasEmpty {
 		return true
 	} else {
 		return false
 	}
 }
 
-func insertVisitor(node *treeNode, head byte, tail []byte) *treeNode {
-	if node == nil {
-		node = &treeNode{char: head}
-	}
-	if head < node.char {
-		node.loKid = insertVisitor(node.loKid, head, tail)
-	} else if head == node.char {
-		if len(tail) > 0 {
-			node.eqKid = insertVisitor(node.eqKid, tail[0], tail[1:])
-		} else {
-			node.terminal = true
-		}
-	} else {
-		node.hiKid = insertVisitor(node.hiKid, head, tail)
-	}
-	return node
-}
-
-func searchVisitor(node *treeNode, head byte, tail []byte) bool {
+func searchVisitor(node *treeNode, head byte, tail string) bool {
 	if node == nil {
 		return false
 	}
@@ -64,8 +62,38 @@ func searchVisitor(node *treeNode, head byte, tail []byte) bool {
 		if len(tail) > 0 {
 			return searchVisitor(node.eqKid, tail[0], tail[1:])
 		}
-		return node.terminal
+		return node.data != nil
 	} else {
 		return searchVisitor(node.hiKid, head, tail)
+	}
+}
+
+// PartialMatchSearch finds matches for wildcard patterns in the ternary search tree.
+func (tree *TernaryTree) PartialMatchSearch(s string, wildcard byte) []string {
+	var result []string
+	if len(s) > 0 {
+		pmSearchVisitor(tree.head, wildcard, s[0], s[1:], &result)
+	} else if tree.hasEmpty {
+		result = append(result, "")
+	}
+	return result
+}
+
+func pmSearchVisitor(node *treeNode, wildcard byte, head byte, tail string, result *[]string) {
+	if node == nil {
+		return
+	}
+	if head == wildcard || head < node.char {
+		pmSearchVisitor(node.loKid, wildcard, head, tail, result)
+	}
+	if head == wildcard || head == node.char {
+		if len(tail) > 0 {
+			pmSearchVisitor(node.eqKid, wildcard, tail[0], tail[1:], result)
+		} else {
+			*result = append(*result, *node.data)
+		}
+	}
+	if head == wildcard || head > node.char {
+		pmSearchVisitor(node.hiKid, wildcard, head, tail, result)
 	}
 }
