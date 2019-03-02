@@ -15,6 +15,7 @@ func testData() []string {
 		"complication",
 		"intermediate",
 		"grandmother",
+		"grandfather",
 		"introduction",
 		"advertising",
 		"acquaintance",
@@ -23,6 +24,8 @@ func testData() []string {
 		"satisfaction",
 		"intervention",
 		"consideration",
+		"tire",
+		"fire",
 	}
 }
 
@@ -130,6 +133,67 @@ func TestPartialMatchSearchEmptyString(t *testing.T) {
 	tree.Insert("")
 	result = tree.PartialMatchSearch("", '.')
 	expected = []string{""}
+	if !reflect.DeepEqual(result, expected) {
+		t.Errorf("expected: %v, observed: %v", expected, result)
+	}
+}
+
+func TestNearNeighborSearch(t *testing.T) {
+	tree := TernaryTree{}
+	data := testData()
+	for _, v := range data {
+		tree.Insert(v)
+	}
+	result := tree.NearNeighborSearch("grandmother", 9)
+	expected := []string{
+		"grandfather",
+		"grandmother",
+		"information",
+		"preparation",
+	}
+	if !reflect.DeepEqual(result, expected) {
+		t.Errorf("expected: %v, observed: %v", expected, result)
+	}
+	result = tree.NearNeighborSearch("grandmother", 8)
+	expected = []string{
+		"grandfather",
+		"grandmother",
+	}
+	if !reflect.DeepEqual(result, expected) {
+		t.Errorf("expected: %v, observed: %v", expected, result)
+	}
+	result = tree.NearNeighborSearch("grandmother", 2)
+	expected = []string{
+		"grandfather",
+		"grandmother",
+	}
+	if !reflect.DeepEqual(result, expected) {
+		t.Errorf("expected: %v, observed: %v", expected, result)
+	}
+}
+
+func TestNearNeighborSearchEmptyString(t *testing.T) {
+	tree := TernaryTree{}
+	data := testData()
+	for _, v := range data {
+		tree.Insert(v)
+	}
+	var expected []string
+	result := tree.NearNeighborSearch("", 0)
+	if !reflect.DeepEqual(result, expected) {
+		t.Errorf("expected: %v, observed: %v", expected, result)
+	}
+	result = tree.NearNeighborSearch("", 1)
+	if !reflect.DeepEqual(result, expected) {
+		t.Errorf("expected: %v, observed: %v", expected, result)
+	}
+	tree.Insert("")
+	expected = []string{""}
+	result = tree.NearNeighborSearch("", 0)
+	if !reflect.DeepEqual(result, expected) {
+		t.Errorf("expected: %v, observed: %v", expected, result)
+	}
+	result = tree.NearNeighborSearch("", 1)
 	if !reflect.DeepEqual(result, expected) {
 		t.Errorf("expected: %v, observed: %v", expected, result)
 	}
