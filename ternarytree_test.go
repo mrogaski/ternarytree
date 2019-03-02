@@ -28,9 +28,9 @@ func TestNew(t *testing.T) {
 	if tree.head != nil {
 		t.Errorf("TernaryTree head incorrectly initialized; expected: %v, observed: %v", nil, tree.head)
 	}
-	if tree.terminal != nil {
-		t.Errorf("TernaryTree terminal flag incorrectly initialized; expected: %v, observed: %v",
-			false, tree.terminal)
+	if tree.hasEmpty {
+		t.Errorf("TernaryTree data flag incorrectly initialized; expected: %v, observed: %v",
+			false, tree.hasEmpty)
 	}
 }
 
