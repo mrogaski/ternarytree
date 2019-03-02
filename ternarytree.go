@@ -3,7 +3,7 @@ package ternarytree
 // TernaryTree is a ternary search tree data structure.
 type TernaryTree struct {
 	head     *treeNode
-	terminal bool
+	terminal *string
 }
 
 type treeNode struct {
@@ -11,7 +11,7 @@ type treeNode struct {
 	loKid    *treeNode
 	eqKid    *treeNode
 	hiKid    *treeNode
-	terminal bool
+	terminal *string
 }
 
 // Insert adds a string to the ternary search tree.
@@ -19,7 +19,7 @@ func (tree *TernaryTree) Insert(s string) {
 	if len(s) > 0 {
 		tree.head = insertVisitor(tree.head, s[0], s[1:])
 	} else {
-		tree.terminal = true
+		tree.terminal = &s
 	}
 }
 
@@ -33,7 +33,7 @@ func insertVisitor(node *treeNode, head byte, tail string) *treeNode {
 		if len(tail) > 0 {
 			node.eqKid = insertVisitor(node.eqKid, tail[0], tail[1:])
 		} else {
-			node.terminal = true
+			node.terminal = &tail
 		}
 	} else {
 		node.hiKid = insertVisitor(node.hiKid, head, tail)
@@ -45,7 +45,7 @@ func insertVisitor(node *treeNode, head byte, tail string) *treeNode {
 func (tree *TernaryTree) Search(s string) bool {
 	if len(s) > 0 {
 		return searchVisitor(tree.head, s[0], s[1:])
-	} else if tree.terminal {
+	} else if tree.terminal != nil {
 		return true
 	} else {
 		return false
@@ -62,7 +62,7 @@ func searchVisitor(node *treeNode, head byte, tail string) bool {
 		if len(tail) > 0 {
 			return searchVisitor(node.eqKid, tail[0], tail[1:])
 		}
-		return node.terminal
+		return node.terminal != nil
 	} else {
 		return searchVisitor(node.hiKid, head, tail)
 	}
