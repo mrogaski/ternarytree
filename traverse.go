@@ -1,6 +1,6 @@
 package ternarytree
 
-// Traverse recursively applies a function to all stored strings.
+// Traverse recursively applies a given callback function to all stored strings.
 func (tree *TernaryTree) Traverse(f func(string)) {
 	if tree.hasEmpty {
 		f("")

@@ -1,6 +1,6 @@
 package ternarytree
 
-// Search tests whether a string was added to the ternary search tree.
+// Search tests whether a string is present in the ternary search tree.
 func (tree *TernaryTree) Search(s string) bool {
 	if len(s) > 0 {
 		return searchVisitor(tree.head, s[0], s[1:])
@@ -27,7 +27,8 @@ func searchVisitor(node *treeNode, head byte, tail string) bool {
 	}
 }
 
-// PartialMatchSearch finds matches for wildcard patterns in the ternary search tree.
+// PartialMatchSearch searches the ternary search tree for contained strings that match the supplied target
+// string or any character for occurrences of the wildcard character in the target string.
 func (tree *TernaryTree) PartialMatchSearch(s string, wildcard byte) []string {
 	var result []string
 	if len(s) > 0 {
@@ -57,7 +58,7 @@ func pmSearchVisitor(node *treeNode, wildcard byte, head byte, tail string, resu
 	}
 }
 
-// NearNeighborSearch finds strings withing a given Hamming distance of the target string.
+// NearNeighborSearch finds strings that differ by no more than a given Hamming distance of the target string.
 func (tree *TernaryTree) NearNeighborSearch(s string, distance int) []string {
 	var result []string
 	if len(s) > 0 {
