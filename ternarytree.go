@@ -118,10 +118,8 @@ func nnSearchVisitor(node *treeNode, distance int, head byte, tail string, resul
 		nnSearchVisitor(node.loKid, distance, head, tail, result)
 	}
 
-	var d int
-	if head == node.char {
-		d = distance
-	} else {
+	d := distance
+	if head != node.char {
 		d = distance - 1
 	}
 	if node.data != nil {
