@@ -97,3 +97,44 @@ func pmSearchVisitor(node *treeNode, wildcard byte, head byte, tail string, resu
 		pmSearchVisitor(node.hiKid, wildcard, head, tail, result)
 	}
 }
+
+// NearNeighborSearch finds strings withing a given Hamming distance of the target string.
+func (tree *TernaryTree) NearNeighborSearch(s string, distance int) []string {
+	var result []string
+	if len(s) > 0 {
+		nnSearchVisitor(tree.head, distance, s[0], s[1:], &result)
+	} else if tree.hasEmpty {
+		result = append(result, "")
+	}
+	return result
+}
+
+func nnSearchVisitor(node *treeNode, distance int, head byte, tail string, result *[]string) {
+	if node == nil || distance < 0 {
+		return
+	}
+
+	if distance > 0 || head < node.char {
+		nnSearchVisitor(node.loKid, distance, head, tail, result)
+	}
+
+	var d int
+	if head == node.char {
+		d = distance
+	} else {
+		d = distance - 1
+	}
+	if node.data != nil {
+		if len(tail) <= d {
+			*result = append(*result, *node.data)
+		}
+	} else {
+		if len(tail) > 0 {
+			nnSearchVisitor(node.eqKid, d, tail[0], tail[1:], result)
+		}
+	}
+
+	if distance > 0 || head > node.char {
+		nnSearchVisitor(node.hiKid, distance, head, tail, result)
+	}
+}
