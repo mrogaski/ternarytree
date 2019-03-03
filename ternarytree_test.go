@@ -198,3 +198,161 @@ func TestNearNeighborSearchEmptyString(t *testing.T) {
 		t.Errorf("expected: %v, observed: %v", expected, result)
 	}
 }
+
+func collector() (func(string), func() []string) {
+	var store []string
+
+	gather := func(s string) {
+		store = append(store, s)
+	}
+
+	report := func() []string {
+		return store
+	}
+
+	return gather, report
+}
+
+func TestTraverse(t *testing.T) {
+	tree := TernaryTree{}
+	data := testData()
+	for _, v := range data {
+		tree.Insert(v)
+	}
+	expected := []string{
+		"accumulation",
+		"acquaintance",
+		"advertising",
+		"complication",
+		"consideration",
+		"discrimination",
+		"expectation",
+		"fire",
+		"grandfather",
+		"grandmother",
+		"information",
+		"interference",
+		"intermediate",
+		"intervention",
+		"introduction",
+		"preparation",
+		"respectable",
+		"satisfaction",
+		"tire",
+	}
+
+	gather, report := collector()
+	tree.Traverse(gather)
+	result := report()
+	if !reflect.DeepEqual(expected, result) {
+		t.Errorf("expected: %v, observed: %v", expected, result)
+	}
+}
+
+func TestTraverseWithEmptyString(t *testing.T) {
+	tree := TernaryTree{}
+	data := testData()
+	tree.Insert("")
+	for _, v := range data {
+		tree.Insert(v)
+	}
+	expected := []string{
+		"",
+		"accumulation",
+		"acquaintance",
+		"advertising",
+		"complication",
+		"consideration",
+		"discrimination",
+		"expectation",
+		"fire",
+		"grandfather",
+		"grandmother",
+		"information",
+		"interference",
+		"intermediate",
+		"intervention",
+		"introduction",
+		"preparation",
+		"respectable",
+		"satisfaction",
+		"tire",
+	}
+
+	gather, report := collector()
+	tree.Traverse(gather)
+	result := report()
+	if !reflect.DeepEqual(expected, result) {
+		t.Errorf("expected: %v, observed: %v", expected, result)
+	}
+}
+
+func TestSort(t *testing.T) {
+	tree := TernaryTree{}
+	data := testData()
+	for _, v := range data {
+		tree.Insert(v)
+	}
+	expected := []string{
+		"accumulation",
+		"acquaintance",
+		"advertising",
+		"complication",
+		"consideration",
+		"discrimination",
+		"expectation",
+		"fire",
+		"grandfather",
+		"grandmother",
+		"information",
+		"interference",
+		"intermediate",
+		"intervention",
+		"introduction",
+		"preparation",
+		"respectable",
+		"satisfaction",
+		"tire",
+	}
+
+	result := tree.Sort()
+	if !reflect.DeepEqual(expected, result) {
+		t.Errorf("expected: %v, observed: %v", expected, result)
+	}
+}
+
+func TestSortWithEmptyString(t *testing.T) {
+	tree := TernaryTree{}
+	data := testData()
+	tree.Insert("")
+	for _, v := range data {
+		tree.Insert(v)
+	}
+	expected := []string{
+		"",
+		"accumulation",
+		"acquaintance",
+		"advertising",
+		"complication",
+		"consideration",
+		"discrimination",
+		"expectation",
+		"fire",
+		"grandfather",
+		"grandmother",
+		"information",
+		"interference",
+		"intermediate",
+		"intervention",
+		"introduction",
+		"preparation",
+		"respectable",
+		"satisfaction",
+		"tire",
+	}
+
+	result := tree.Sort()
+	if !reflect.DeepEqual(expected, result) {
+		t.Errorf("expected: %v, observed: %v", expected, result)
+	}
+}
